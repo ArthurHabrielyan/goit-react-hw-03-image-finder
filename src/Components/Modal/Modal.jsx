@@ -1,6 +1,8 @@
 import { Component } from "react";
 import { createPortal } from "react-dom";
 import style from "./Modal.module.css";
+import PropTypes from "prop-types";
+
 const modalRoot = document.querySelector("#modal-root");
 
 export class Modal extends Component {
@@ -12,8 +14,8 @@ export class Modal extends Component {
     window.removeEventListener("keydown", this.onCloseModal);
   }
 
-  onCloseModal = (event) => {
-    if (event.code === "Escape") {
+  onCloseModal = ({ code }) => {
+    if (code === "Escape") {
       this.props.onToggleModal();
     }
   };
@@ -33,3 +35,8 @@ export class Modal extends Component {
     );
   }
 }
+
+Modal.propTypes = {
+  onToggleModal: PropTypes.func.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+};

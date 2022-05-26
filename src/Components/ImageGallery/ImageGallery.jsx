@@ -1,5 +1,6 @@
 import { ImageGalleryItem } from "../ImageGalleryItem";
 import style from "./ImageGallery.module.css";
+import PropTypes from "prop-types";
 
 export const ImageGallery = ({ arrOfImages, onToggleModal, onClickImg }) => {
   return (
@@ -17,4 +18,10 @@ export const ImageGallery = ({ arrOfImages, onToggleModal, onClickImg }) => {
         })}
     </ul>
   );
+};
+
+ImageGallery.propTypes = {
+  arrOfImages: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onClickImg: PropTypes.func.isRequired,
+  onToggleModal: PropTypes.func.isRequired,
 };

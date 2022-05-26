@@ -1,4 +1,5 @@
 import style from "./ImageGalleryItem.module.css";
+import PropTypes from "prop-types";
 
 export const ImageGalleryItem = ({
   webformatURL,
@@ -15,4 +16,10 @@ export const ImageGalleryItem = ({
       />
     </li>
   );
+};
+
+ImageGalleryItem.propTypes = {
+  webformatURL: PropTypes.string.isRequired,
+  onClickImg: PropTypes.func.isRequired,
+  onToggleModal: PropTypes.func.isRequired,
 };

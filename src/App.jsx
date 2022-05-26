@@ -16,17 +16,6 @@ export class App extends Component {
     error: null,
   };
 
-  componentDidMount() {
-    const { searchImage, currentPage } = this.state;
-
-    getData(searchImage, currentPage)
-      .then((data) => {
-        this.setState({ arrOfResult: [...data.hits] });
-      })
-      .catch((error) => this.setState({ error }))
-      .finally(this.setState({ isLoading: false }));
-  }
-
   handlerForSubmit = (searchQuerry) => {
     this.setState({ searchImage: searchQuerry });
   };
@@ -35,30 +24,30 @@ export class App extends Component {
     this.setState({ currentPage: this.state.currentPage + 1 });
   };
 
-  onNewSearch = () => {
-    const { searchImage, currentPage } = this.state;
-    this.setState({ isLoading: true });
-
-    getData(searchImage, currentPage)
-      .then((res) => {
-        this.setState({
-          arrOfResult: [...res.hits],
-        });
-      })
-      .catch((error) => this.setState({ error }));
-
-    setTimeout(() => this.setState({ isLoading: false }), 500);
-  };
-
-  onMoreImage = () => {
+  onLoadImage = (isMoreImage) => {
     const { searchImage, currentPage, arrOfResult } = this.state;
     this.setState({ isLoading: true });
 
-    getData(searchImage, currentPage).then((res) => {
-      this.setState({
-        arrOfResult: [...arrOfResult, ...res.hits],
-      }).catch((error) => this.setState({ error }));
-    });
+    getData(searchImage, currentPage)
+      .then(({ hits }) => {
+        this.setState({
+          arrOfResult: isMoreImage
+            ? hits.map(({ id, webformatURL, largeImageURL }) => ({
+                id,
+                webformatURL,
+                largeImageURL,
+              }))
+            : [
+                ...arrOfResult,
+                ...hits.map(({ id, webformatURL, largeImageURL }) => ({
+                  id,
+                  webformatURL,
+                  largeImageURL,
+                })),
+              ],
+        });
+      })
+      .catch((error) => this.setState({ error }));
 
     setTimeout(() => this.setState({ isLoading: false }), 500);
   };
@@ -86,16 +75,18 @@ export class App extends Component {
     const prevPage = prevState.currentPage;
 
     if (prevValue !== nextValue) {
-      this.onNewSearch();
+      this.setState({ currentPage: 1 });
+      this.onLoadImage(true);
     }
     if (currentPage !== prevPage) {
-      this.onMoreImage();
+      this.onLoadImage();
     }
   }
 
   render() {
-    const show = this.state.arrOfResult.length >= 0;
+    const show = this.state.arrOfResult.length > 0;
     const { isLoading, arrOfResult, largeImageURL, showModal } = this.state;
+
     return (
       <>
         <Searchbar isLoading={isLoading} onSubmit={this.handlerForSubmit} />

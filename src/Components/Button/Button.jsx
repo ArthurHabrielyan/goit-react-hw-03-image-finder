@@ -1,5 +1,6 @@
 import React from "react";
 import style from "./Button.module.css";
+import PropTypes from "prop-types";
 
 export const Button = ({ onClick }) => (
   <div className={style.footer}>
@@ -8,3 +9,7 @@ export const Button = ({ onClick }) => (
     </button>
   </div>
 );
+
+Button.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
