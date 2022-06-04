@@ -9,6 +9,11 @@ export class Searchbar extends Component {
     requestValue: "",
   };
 
+  static = {
+    onSubmit: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
+  };
+
   searchHandler = (e) => {
     e.preventDefault();
     this.props.onSubmit(this.state.requestValue);
@@ -52,8 +57,3 @@ export class Searchbar extends Component {
     );
   }
 }
-
-Searchbar.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
-};

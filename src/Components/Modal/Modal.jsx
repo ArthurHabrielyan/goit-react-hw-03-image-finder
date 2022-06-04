@@ -6,6 +6,11 @@ import PropTypes from "prop-types";
 const modalRoot = document.querySelector("#modal-root");
 
 export class Modal extends Component {
+  static = {
+    onToggleModal: PropTypes.func.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+  };
+
   componentDidMount() {
     window.addEventListener("keydown", this.onCloseModal);
   }
@@ -35,8 +40,3 @@ export class Modal extends Component {
     );
   }
 }
-
-Modal.propTypes = {
-  onToggleModal: PropTypes.func.isRequired,
-  largeImageURL: PropTypes.string.isRequired,
-};
