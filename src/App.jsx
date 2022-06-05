@@ -16,7 +16,23 @@ export class App extends Component {
     error: null,
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    const prevValue = prevState.searchImage;
+    const nextValue = this.state.searchImage;
+    const currentPage = this.state.currentPage;
+    const prevPage = prevState.currentPage;
+
+    if (prevValue !== nextValue) {
+      this.onLoadImage(true);
+    }
+
+    if (currentPage !== prevPage && prevValue === nextValue) {
+      this.onLoadImage();
+    }
+  }
+
   handlerForSubmit = (searchQuerry) => {
+    this.setState({ currentPage: 1 });
     this.setState({ searchImage: searchQuerry });
   };
 
@@ -67,21 +83,6 @@ export class App extends Component {
       ).largeImageURL,
     });
   };
-
-  componentDidUpdate(prevProps, prevState) {
-    const prevValue = prevState.searchImage;
-    const nextValue = this.state.searchImage;
-    const currentPage = this.state.currentPage;
-    const prevPage = prevState.currentPage;
-
-    if (prevValue !== nextValue) {
-      this.setState({ currentPage: 1 });
-      this.onLoadImage(true);
-    }
-    if (currentPage !== prevPage) {
-      this.onLoadImage();
-    }
-  }
 
   render() {
     const show = this.state.arrOfResult.length > 0;
